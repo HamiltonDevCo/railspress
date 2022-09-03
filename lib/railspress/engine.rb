@@ -28,7 +28,7 @@ module Railspress
     end
   end
 
-  class << self
+  #class << self
     mattr_accessor :ABSPATH
     mattr_accessor :SERVERPATH
     mattr_accessor :WPINC
@@ -66,7 +66,7 @@ module Railspress
     self.WP_DEBUG = false
     self.WP_PLUGIN_DIR = "wp-content/plugins"
     self.GLOBAL = Railspress::GlobalVars.new
-  end
+  #end
 
   # this function maps the vars from your app into your engine
   def self.setup(&block)
