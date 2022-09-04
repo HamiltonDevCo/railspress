@@ -237,7 +237,7 @@ module Railspress::NavMenuTemplateHelper
   def _wp_menu_item_classes_by_context(menu_items)
     # TODO queried_object?
     require_relative '../../../lib/railspress/wp_query'
-    @wp_query = Railspress::WP_Query.new if @wp_query.nil?
+    @wp_query = Railspress::Wp_Query.new if @wp_query.nil?
     queried_object    = @wp_query.get_queried_object
     queried_object_id = @wp_query.queried_object_id
 

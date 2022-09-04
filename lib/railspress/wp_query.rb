@@ -8,7 +8,7 @@
 #
 # @link https://codex.wordpress.org/Function_Reference/WP_Query Codex page.
 #
-class Railspress::WP_Query
+class Railspress::Wp_Query
   include Railspress::Functions
   include Railspress::FormattingHelper
   include Railspress::Plugin

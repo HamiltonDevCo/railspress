@@ -22,7 +22,7 @@ module Railspress
 
     def init_wp_query
       require_relative '../../../lib/railspress/wp_query'
-      @wp_query = Railspress::WP_Query.new params
+      @wp_query = Railspress::Wp_Query.new params
     end
 
     protected
