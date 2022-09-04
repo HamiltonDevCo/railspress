@@ -324,7 +324,7 @@ class Railspress::WpQuery
 
     # -------------------------------------------------------------------
 
-    if !RailspressPhp.is_scalar(@qv['p']) || @qv['p'].to_i < 0
+    if !RailspressPHP.is_scalar(@qv['p']) || @qv['p'].to_i < 0
       @qv['p'] = 0
       @qv['error'] = '404'
     else
@@ -336,7 +336,7 @@ class Railspress::WpQuery
     @qv['monthnum'] = Railspress::Functions.absint @qv['monthnum']
     @qv['day']      = Railspress::Functions.absint @qv['day']
     @qv['w']        = Railspress::Functions.absint @qv['w']
-    @qv['m']        = RailspressPhp.is_scalar(@qv['m']) ? @qv['m'].gsub(/[^0-9]/, '') : ''
+    @qv['m']        = RailspressPHP.is_scalar(@qv['m']) ? @qv['m'].gsub(/[^0-9]/, '') : ''
     @qv['paged']    = Railspress::Functions.absint @qv['paged']
     @qv['cat']      = @qv['cat'].gsub(/[^0-9,-]/, '') if @qv['cat'].is_a?(String)
     @qv['author']   = @qv['author'].gsub(/[^0-9,-]/, '')
@@ -349,7 +349,7 @@ class Railspress::WpQuery
     @qv['menu_order'] = Railspress::Functions.absint(@qv['menu_order']) unless @qv['menu_order'] == ''
 
     # Fairly insane upper bound for search string lengths.
-    @qv['s'] = '' if !RailspressPhp.is_scalar(@qv['s']) || (!@qv['s'].blank? && RailspressPhp.strlen(@qv['s']) > 1600)
+    @qv['s'] = '' if !RailspressPHP.is_scalar(@qv['s']) || (!@qv['s'].blank? && RailspressPhp.strlen(@qv['s']) > 1600)
 
     # Compat. Map subpost to attachment.
     @qv['attachment'] = @qv['subpost'] unless @qv['subpost'] == ''
