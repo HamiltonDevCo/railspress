@@ -320,14 +320,14 @@ module Railspress::TaxonomyLib
   #     @type bool          $_builtin              This taxonomy is a "built-in" taxonomy. INTERNAL USE ONLY!
   #                                                Default false.
   # }
-  # @return WP_Error|void WP_Error, if errors.
+  # @return WpError|void WpError, if errors.
   def register_taxonomy(taxonomy, object_type, args = {})
     Railspress.GLOBAL.wp_taxonomies = {} if Railspress.GLOBAL.wp_taxonomies.nil?
     args = Railspress::Functions.wp_parse_args( args )
 
     if taxonomy.blank? || taxonomy.length > 32
       # _doing_it_wrong( __FUNCTION__, __( 'Taxonomy names must be between 1 and 32 characters in length.' ), '4.2.0' )
-      return Railspress::WP_Error.new( 'taxonomy_length_invalid', ( 'Taxonomy names must be between 1 and 32 characters in length.' ) )
+      return Railspress::WpError.new( 'taxonomy_length_invalid', ( 'Taxonomy names must be between 1 and 32 characters in length.' ) )
     end
     # TODO continue WP_Taxonomy
 
@@ -438,7 +438,7 @@ module Railspress::TaxonomyLib
   end
 
   def get_post_type_object(post_type) # copied from PostsHelper, because it could not access it otherwise
-    if !Railspress::PHP.is_scalar(post_type) || Railspress.GLOBAL.wp_post_types[post_type].blank?
+    if !RailspressPhp.is_scalar(post_type) || Railspress.GLOBAL.wp_post_types[post_type].blank?
       return nil
     end
     Railspress.GLOBAL.wp_post_types[post_type]
@@ -528,14 +528,14 @@ module Railspress::TaxonomyLib
   # @param [string]     output   Optional. The required return type. One of OBJECT, ARRAY_A, or ARRAY_N, which correspond to
   #                              a WP_Term object, an associative array, or a numeric array, respectively. Default OBJECT.
   # @param [string]     filter   Optional, default is raw or no WordPress defined filter will applied.
-  # @return array|WP_Term|WP_Error|null Object of the type specified by `$output` on success. When `$output` is 'OBJECT',
-  #                                     a WP_Term instance is returned. If taxonomy does not exist, a WP_Error is
+  # @return array|WP_Term|WpError|null Object of the type specified by `$output` on success. When `$output` is 'OBJECT',
+  #                                     a WP_Term instance is returned. If taxonomy does not exist, a WpError is
   #                                     returned. Returns null for miscellaneous failure.
   def get_term(term, taxonomy = '', output = :OBJECT, filter = 'raw' )
-    return WP_Error.new('invalid_term', I18n.t('railspress.invalid_term')) if term.blank?
+    return WpError.new('invalid_term', I18n.t('railspress.invalid_term')) if term.blank?
 
     if !taxonomy.blank? && !taxonomy_exists(taxonomy)
-      return WP_Error.new('invalid_taxonomy', I18n.t('railspress.invalid_taxonomy'))
+      return WpError.new('invalid_taxonomy', I18n.t('railspress.invalid_taxonomy'))
     end
 
     if term.is_a? Railspress::Term
@@ -557,7 +557,7 @@ module Railspress::TaxonomyLib
       end
     end
 
-    if _term.is_a? Railspress::WP_Error
+    if _term.is_a? Railspress::WpError
       return _term
     elsif _term.nil?
       return nil
@@ -633,7 +633,7 @@ module Railspress::TaxonomyLib
     if :id == field || :term_id == field
       term = get_term(value.to_i, taxonomy, output, filter)
 
-      term = false if term.is_a?(Railspress::WP_Error) || term.nil?
+      term = false if term.is_a?(Railspress::WpError) || term.nil?
 
       return term
     end
@@ -660,7 +660,7 @@ module Railspress::TaxonomyLib
     end
 
     terms = get_terms(args)
-    return false  if  terms.is_a?(Railspress::WP_Error) || terms.blank?
+    return false  if  terms.is_a?(Railspress::WpError) || terms.blank?
 
     term = terms.to_a.shift
 
@@ -684,10 +684,10 @@ module Railspress::TaxonomyLib
   # @param [int|WP_Term] term     Term ID or object.
   # @param [string]      taxonomy Optional. Taxonomy Name. Default empty.
   # @param [string]      context  Optional, default is display. Look at sanitize_term_field() for available options.
-  # @return [string|int|null|WP_Error] Will return an empty string if $term is not an object or if $field is not set in $term.
+  # @return [string|int|null|WpError] Will return an empty string if $term is not an object or if $field is not set in $term.
   def get_term_field( field, term, taxonomy = '', context = 'display' )
     term = get_term( term, taxonomy )
-    return term if term.is_a?(Railspress::WP_Error)
+    return term if term.is_a?(Railspress::WpError)
 
     return '' unless term.is_a? Object
 
@@ -716,7 +716,7 @@ module Railspress::TaxonomyLib
   #
   # @param [string|array] args       Optional. Array or string of arguments. See WP_Term_Query::__construct()
   #                                  for information on accepted arguments. Default empty.
-  # @return [array|int|WP_Error] List of WP_Term instances and their children. Will return WP_Error, if any of $taxonomies
+  # @return [array|int|WpError] List of WP_Term instances and their children. Will return WpError, if any of $taxonomies
   #                              do not exist.
   def get_terms(args = {})
     term_query = {} # WP_Term_Query();
@@ -732,7 +732,7 @@ module Railspress::TaxonomyLib
 
     unless args[:taxonomy].empty?
       args[:taxonomy].each do |taxonomy|
-        return WP_Error.new('invalid_taxonomy', I18n.t('railspress.invalid_taxonomy')) unless taxonomy_exists(taxonomy)
+        return WpError.new('invalid_taxonomy', I18n.t('railspress.invalid_taxonomy')) unless taxonomy_exists(taxonomy)
       end
     end
 
@@ -889,8 +889,8 @@ module Railspress::TaxonomyLib
   # @param [int|array]    object_ids The ID(s) of the object(s) to retrieve.
   # @param [string|array] taxonomies The taxonomies to retrieve terms from.
   # @param [array|string] args       See WP_Term_Query::__construct() for supported arguments.
-  # @return [array|WP_Error] The requested term data or empty array if no terms found.
-  #                        WP_Error if any of the taxonomies don't exist.
+  # @return [array|WpError] The requested term data or empty array if no terms found.
+  #                        WpError if any of the taxonomies don't exist.
   def wp_get_object_terms(object_ids, taxonomies, args = {})
     return {} if object_ids.blank? or taxonomies.blank?
 
@@ -901,7 +901,7 @@ module Railspress::TaxonomyLib
     # taxonomies.each do |taxonomy|
     #   unless taxonomy_exists(taxonomy)
     #     p "Taxonomy #{taxonomy} is invalid in #{taxonomies}"
-    #     raise WP_Error.new('invalid_taxonomy', I18n.t('railspress.invalid_taxonomy'))
+    #     raise WpError.new('invalid_taxonomy', I18n.t('railspress.invalid_taxonomy'))
     #   end
     # end
 
@@ -977,7 +977,7 @@ module Railspress::TaxonomyLib
   #
   # @param [object|int|string] term     The term object, ID, or slug whose link will be retrieved.
   # @param [string]            taxonomy Optional. Taxonomy. Default empty.
-  # @return [string|WP_Error] HTML link to taxonomy term archive on success, WP_Error if term does not exist.
+  # @return [string|WpError] HTML link to taxonomy term archive on success, WpError if term does not exist.
   def get_term_link(term, taxonomy = '')
     # global $wp_rewrite;
 
@@ -991,10 +991,10 @@ module Railspress::TaxonomyLib
       end
     end
     if term.blank?
-      term = Railspress::WP_Error.new('invalid_term', I18n.t('railspress.invalid_term'))
+      term = Railspress::WpError.new('invalid_term', I18n.t('railspress.invalid_term'))
     end
 
-    return term if term.is_a? Railspress::WP_Error
+    return term if term.is_a? Railspress::WpError
 
   #  taxonomy = term.taxonomy
 

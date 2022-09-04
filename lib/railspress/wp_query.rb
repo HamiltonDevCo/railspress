@@ -1,14 +1,14 @@
 =begin
- * Query API: WP_Query class
+ * Query API: WpQuery class
  *
  * file wp-includes\class-wp-query.php
 =end
 
 # The WordPress Query class.
 #
-# @link https://codex.wordpress.org/Function_Reference/WP_Query Codex page.
+# @link https://codex.wordpress.org/Function_Reference/WpQuery Codex page.
 #
-class Railspress::Wp_Query
+class Railspress::WpQuery
   include Railspress::Functions
   include Railspress::FormattingHelper
   include Railspress::Plugin
@@ -324,7 +324,7 @@ class Railspress::Wp_Query
 
     # -------------------------------------------------------------------
 
-    if !Railspress::PHP.is_scalar(@qv['p']) || @qv['p'].to_i < 0
+    if !RailspressPhp.is_scalar(@qv['p']) || @qv['p'].to_i < 0
       @qv['p'] = 0
       @qv['error'] = '404'
     else
@@ -336,7 +336,7 @@ class Railspress::Wp_Query
     @qv['monthnum'] = Railspress::Functions.absint @qv['monthnum']
     @qv['day']      = Railspress::Functions.absint @qv['day']
     @qv['w']        = Railspress::Functions.absint @qv['w']
-    @qv['m']        = Railspress::PHP.is_scalar(@qv['m']) ? @qv['m'].gsub(/[^0-9]/, '') : ''
+    @qv['m']        = RailspressPhp.is_scalar(@qv['m']) ? @qv['m'].gsub(/[^0-9]/, '') : ''
     @qv['paged']    = Railspress::Functions.absint @qv['paged']
     @qv['cat']      = @qv['cat'].gsub(/[^0-9,-]/, '') if @qv['cat'].is_a?(String)
     @qv['author']   = @qv['author'].gsub(/[^0-9,-]/, '')
@@ -349,7 +349,7 @@ class Railspress::Wp_Query
     @qv['menu_order'] = Railspress::Functions.absint(@qv['menu_order']) unless @qv['menu_order'] == ''
 
     # Fairly insane upper bound for search string lengths.
-    @qv['s'] = '' if !Railspress::PHP.is_scalar(@qv['s']) || (!@qv['s'].blank? && Railspress::PHP.strlen(@qv['s']) > 1600)
+    @qv['s'] = '' if !RailspressPhp.is_scalar(@qv['s']) || (!@qv['s'].blank? && RailspressPhp.strlen(@qv['s']) > 1600)
 
     # Compat. Map subpost to attachment.
     @qv['attachment'] = @qv['subpost'] unless @qv['subpost'] == ''
@@ -818,7 +818,7 @@ class Railspress::Wp_Query
     search = parse_search(@qv) unless @qv['s'].blank?
 
     unless @qv['suppress_filters']
-      # Filters the search SQL that is used in the WHERE clause of WP_Query.
+      # Filters the search SQL that is used in the WHERE clause of WpQuery.
       # $search = apply_filters_ref_array( 'posts_search', array( $search, &$this ) )
     end
 
@@ -916,7 +916,7 @@ class Railspress::Wp_Query
         # TODO continue..
       end
 
-      if !term.blank? && !term.is_a?(Railspress::WP_Error)
+      if !term.blank? && !term.is_a?(Railspress::WpError)
         @queried_object = term
         @queried_object_id = term.term_id
       end
@@ -1133,7 +1133,7 @@ class Railspress::Wp_Query
   # If you set a static page for the front page of your site, this function will return
   # true when viewing that page.
   #
-  # Otherwise the same as @see WP_Query::is_home()
+  # Otherwise the same as @see WpQuery::is_home()
   #
   # @return bool True, if front of site.
   def is_front_page?
@@ -1156,7 +1156,7 @@ class Railspress::Wp_Query
   # If you set a static page for the front page of your site, this function will return
   # true only on the page you set as the "Posts page".
   #
-  # @see WP_Query::is_front_page()
+  # @see WpQuery::is_front_page()
   #
   # @return [bool] True if blog view homepage.
   def is_home?
@@ -1185,8 +1185,8 @@ class Railspress::Wp_Query
   # If the page parameter is specified, this function will additionally
   # check if the query is for one of the pages specified.
   #
-  # @see WP_Query::is_single()
-  # @see WP_Query::is_singular()
+  # @see WpQuery::is_single()
+  # @see WpQuery::is_singular()
   #
   # @param [int|string|int[]|string[]] page Optional. Page ID, title, slug, path, or array of such
   #                                         to check against. Default empty.

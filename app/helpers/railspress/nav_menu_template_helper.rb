@@ -117,7 +117,7 @@ module Railspress::NavMenuTemplateHelper
     args[:menu] = menu if args[:menu].blank?
 
     # If the menu exists, get its items.
-    if menu && !menu.is_a?(Railspress::WP_Error) && menu_items.blank?
+    if menu && !menu.is_a?(Railspress::WpError) && menu_items.blank?
       menu_items = wp_get_nav_menu_items(menu, {update_post_term_cache: false } )
     end
 
@@ -127,7 +127,7 @@ module Railspress::NavMenuTemplateHelper
     # If no menu items were found:
     #  - Fall back, but only if no theme location was specified.
     #  - Otherwise, bail.
-    if ( ! menu || menu.is_a?(Railspress::WP_Error) || (menu_items.blank? && ! args[:theme_location] ) ) && !args[:fallback_cb].nil? && args[:fallback_cb] && true # is_callable( args[:fallback_cb] )
+    if ( ! menu || menu.is_a?(Railspress::WpError) || (menu_items.blank? && ! args[:theme_location] ) ) && !args[:fallback_cb].nil? && args[:fallback_cb] && true # is_callable( args[:fallback_cb] )
       # return call_user_func( args[:fallback_cb], args )
       if args[:fallback_cb].include? '.'
         the_class, the_method = args[:fallback_cb].split('.', 2)
@@ -137,7 +137,7 @@ module Railspress::NavMenuTemplateHelper
       end
     end
 
-    if  ! menu || menu.is_a?( Railspress::WP_Error)
+    if  ! menu || menu.is_a?( Railspress::WpError)
       return false
     end
 
@@ -230,14 +230,14 @@ module Railspress::NavMenuTemplateHelper
 
   # Add the class property classes for the current context, if applicable.
   #
-  # @global WP_Query   $wp_query
+  # @global WpQuery   $wp_query
   # @global WP_Rewrite $wp_rewrite
   #
   # @param [array] menu_items The current menu item objects to which to add the class property information.
   def _wp_menu_item_classes_by_context(menu_items)
     # TODO queried_object?
     require_relative '../../../lib/railspress/wp_query'
-    @wp_query = Railspress::Wp_Query.new if @wp_query.nil?
+    @wp_query = Railspress::WpQuery.new if @wp_query.nil?
     queried_object    = @wp_query.get_queried_object
     queried_object_id = @wp_query.queried_object_id
 

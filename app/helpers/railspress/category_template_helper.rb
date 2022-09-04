@@ -15,7 +15,7 @@ module Railspress::CategoryTemplateHelper
     # end
 
     category = get_term_link( category )
-    return '' if category.is_a? Railspress::WP_Error # is_wp_error
+    return '' if category.is_a? Railspress::WpError # is_wp_error
 
     return category
   end
@@ -27,7 +27,7 @@ module Railspress::CategoryTemplateHelper
   # @param [string] 	separator Optional, default is '/'. How to separate categories.
   # @param [bool] 	nicename Optional, default is false. Whether to use nice name for display.
   # @param [array] 	deprecated Not used.
-  # @return string|WP_Error A list of category parents on success, WP_Error on failure.
+  # @return string|WpError A list of category parents on success, WpError on failure.
   def get_category_parents(id, link = false, separator = '/', nicename = false, deprecated = [])
 
     format = nicename ? 'slug' : 'name'
@@ -48,7 +48,7 @@ module Railspress::CategoryTemplateHelper
   # @return WP_Term[] Array of WP_Term objects, one for each category assigned to the post.
   def get_the_category( id = false )
     categories = get_the_terms( id, 'category' )
-    if !categories || categories.is_a?(Railspress::WP_Error)
+    if !categories || categories.is_a?(Railspress::WpError)
       categories = {}
     end
 
@@ -122,7 +122,7 @@ module Railspress::CategoryTemplateHelper
   # Retrieve the tags for a post.
   #
   # @param [int] id Post ID.
-  # @return [array|false|WP_Error] Array of tag objects on success, false on failure.
+  # @return [array|false|WpError] Array of tag objects on success, false on failure.
   def get_the_tags(id = 0)
     # Filters the array of tags for the given post.
     apply_filters('get_the_tags', get_the_terms(id, 'post_tag'))
@@ -134,7 +134,7 @@ module Railspress::CategoryTemplateHelper
   # @param [string] sep Optional. Between tags.
   # @param [string] after Optional. After tags.
   # @param [int] id Optional. Post ID. Defaults to the current post.
-  # @return string|false|WP_Error A list of tags on success, false if there are no terms, WP_Error on failure.
+  # @return string|false|WpError A list of tags on success, false if there are no terms, WpError on failure.
   def get_the_tag_list(before = '', sep = '', after = '', id = 0)
     # Filters the tags list for a given post.
     apply_filters('the_tags', get_the_term_list(id, 'post_tag', before, sep, after), before, sep, after, id)
@@ -146,8 +146,8 @@ module Railspress::CategoryTemplateHelper
   #
   # @param [int|WP_Post] post     Post ID or object.
   # @param [string]      taxonomy Taxonomy name.
-  # @return [WP_Term[]|false|WP_Error] Array of WP_Term objects on success, false if there are no terms
-  #                                    or the post does not exist, WP_Error on failure.
+  # @return [WP_Term[]|false|WpError] Array of WP_Term objects on success, false if there are no terms
+  #                                    or the post does not exist, WpError on failure.
   def get_the_terms(post, taxonomy)
     post = get_post(post)
 
@@ -156,7 +156,7 @@ module Railspress::CategoryTemplateHelper
     terms = false # TODO get_object_term_cache(post.id, taxonomy)
     if terms == false
       terms = wp_get_object_terms(post.id, taxonomy)
-      unless terms.is_a? Railspress::WP_Error
+      unless terms.is_a? Railspress::WpError
         # term_ids = wp_list_pluck(terms, 'term_id')
         # TODO wp_cache_add(post.id, term_ids, taxonomy + '_relationships')
       end
@@ -177,11 +177,11 @@ module Railspress::CategoryTemplateHelper
   # @param [string] before Optional. Before list.
   # @param [string] sep Optional. Separate items using this.
   # @param [string] after Optional. After list.
-  # @return string|false|WP_Error A list of terms on success, false if there are no terms, WP_Error on failure.
+  # @return string|false|WpError A list of terms on success, false if there are no terms, WpError on failure.
   def get_the_term_list(id, taxonomy, before = '', sep = '', after = '')
     terms = get_the_terms(id, taxonomy)
 
-    return terms if terms.is_a? Railspress::WP_Error
+    return terms if terms.is_a? Railspress::WpError
 
     return false if terms.blank?
 
@@ -189,7 +189,7 @@ module Railspress::CategoryTemplateHelper
 
     terms.each do |term|
       link = get_term_link(term, taxonomy)
-      return link if link.is_a? Railspress::WP_Error
+      return link if link.is_a? Railspress::WpError
       links << '<a href="' + esc_url(link) + '" rel="tag" class="badge bg-secondary text-light text-decoration-none">' + term.name + '</a>' # TODO make a filter for the class
     end
 
@@ -214,12 +214,12 @@ module Railspress::CategoryTemplateHelper
   #     @type bool   :link      Whether to format as a link. Default true.
   #     @type bool   :inclusive Include the term to get the parents for. Default true.
   # }
-  # @return [string|WP_Error] A list of term parents on success, WP_Error or empty string on failure.
+  # @return [string|WpError] A list of term parents on success, WpError or empty string on failure.
   def get_term_parents_list( term_id, taxonomy, args = {} )
     list = ''
     term = get_term( term_id, taxonomy )
 
-    return term if term.is_a?(Railspress::WP_Error)
+    return term if term.is_a?(Railspress::WpError)
 
     return list unless term
 

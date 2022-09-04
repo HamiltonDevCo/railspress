@@ -5,7 +5,7 @@ module Railspress
     include Railspress::TemplateHelper
 
     def singular
-      # @wp_query = Railspress::WP_Query.new(params)
+      # @wp_query = Railspress::WpQuery.new(params)
       @post = @wp_query.post # Railspress::Post.published.where(post_name: params[:name]).first!
       unless @post.nil?
         if @post.post_status == 'private'
@@ -96,7 +96,7 @@ module Railspress
       # args.kind_of? ActionController::Parameters
       params_as_hash = JSON.parse(params.to_s.gsub('=>', ':'))
 
-      # @wp_query = Railspress::WP_Query.new
+      # @wp_query = Railspress::WpQuery.new
       super
     end
 

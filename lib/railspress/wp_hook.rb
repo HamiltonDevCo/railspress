@@ -5,7 +5,7 @@
  *
  * file wp-includes\class-wp-hook.php
 =end
-class Railspress::WPHook
+class Railspress::WpHook
 
   # Hook callbacks.
   #

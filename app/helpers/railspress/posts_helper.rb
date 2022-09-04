@@ -7,7 +7,7 @@ module Railspress::PostsHelper
   include Railspress::Functions
   include Railspress::Plugin
   include Railspress::Load
-  include Railspress::PHP
+  include Railspress::Php
   include Railspress::MetaHelper
 
   # Creates the initial post types when 'init' action is fired.
@@ -132,7 +132,7 @@ module Railspress::PostsHelper
 
   # Registers a post type.
   #
-  # @return WP_Post_Type|WP_Error The registered post type object, or an error object.
+  # @return WP_Post_Type|WpError The registered post type object, or an error object.
   def self.register_post_type(post_type, args = {} )
     Railspress.GLOBAL.wp_post_types ||= {}
 
@@ -141,7 +141,7 @@ module Railspress::PostsHelper
 
     if  post_type.blank?  || post_type.length > 20
       # _doing_it_wrong( __FUNCTION__, __( 'Post type names must be between 1 and 20 characters in length.' ), '4.2.0' );
-      return Railspress::WP_Error.new('post_type_length_invalid', ( 'Post type names must be between 1 and 20 characters in length.' ) )
+      return Railspress::WpError.new('post_type_length_invalid', ( 'Post type names must be between 1 and 20 characters in length.' ) )
     end
 
     post_type_object = Railspress::WpPostType.new(post_type, args)
@@ -585,7 +585,7 @@ module Railspress::PostsHelper
   # @return WP_Post_Type|null WP_Post_Type object if it exists, null otherwise.
   def get_post_type_object(post_type)
 
-    if !Railspress::PHP.is_scalar(post_type) || Railspress.GLOBAL.wp_post_types[post_type].blank?
+    if !Railspress::Php.is_scalar(post_type) || Railspress.GLOBAL.wp_post_types[post_type].blank?
       return nil
     end
 
@@ -627,15 +627,15 @@ module Railspress::PostsHelper
   # Retrieves an array of the latest posts, or posts matching the given criteria.
   #
   # @param [array] $args {
-  #     Optional. Arguments to retrieve posts. See WP_Query::parse_query() for all
+  #     Optional. Arguments to retrieve posts. See WpQuery::parse_query() for all
   #     available arguments.
   #
   #     @type int        numberposts      Total number of posts to retrieve. Is an alias of $posts_per_page
-  #                                        in WP_Query. Accepts -1 for all. Default 5.
+  #                                        in WpQuery. Accepts -1 for all. Default 5.
   #     @type int|string category         Category ID or comma-separated list of IDs (this or any children).
-  #                                       Is an alias of $cat in WP_Query. Default 0.
+  #                                       Is an alias of $cat in WpQuery. Default 0.
   #     @type array      include          An array of post IDs to retrieve, sticky posts will be included.
-  #                                       Is an alias of $post__in in WP_Query. Default empty array.
+  #                                       Is an alias of $post__in in WpQuery. Default empty array.
   #     @type array      exclude          An array of post IDs not to retrieve. Default empty array.
   #     @type bool       suppress_filters Whether to suppress filters. Default true.
   # }
@@ -675,7 +675,7 @@ module Railspress::PostsHelper
     r[:ignore_sticky_posts] = true
     r[:no_found_rows]       = true
 
-    # $get_posts = new WP_Query;
+    # $get_posts = new WpQuery;
     # return $get_posts->query( $r );
     where_clause = {post_parent: r[:post_parent], post_type: r[:post_type], post_status: r[:post_status]}
     where_clause[:id] = r[:post__in]  unless r[:post__in].nil?

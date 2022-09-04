@@ -79,7 +79,7 @@ module Railspress::Plugin
   def add_filter( tag, function_to_add, priority = 10, accepted_args = 1 )
     #global $wp_filter;
 
-    Railspress.GLOBAL.wp_filter[tag] = Railspress::WPHook.new if Railspress.GLOBAL.wp_filter[ tag ].blank?
+    Railspress.GLOBAL.wp_filter[tag] = Railspress::WpHook.new if Railspress.GLOBAL.wp_filter[ tag ].blank?
 
     Railspress.GLOBAL.wp_filter[tag].add_filter( tag, function_to_add, priority, accepted_args )
     true

@@ -96,7 +96,7 @@ module Railspress::LinkTemplateHelper
           # having to assign it explicitly
           if category.blank?
             default_category = get_term( get_option( 'default_category' ), 'category' )
-            if  default_category && !default_category.is_a?(Railspress::WP_Error)
+            if  default_category && !default_category.is_a?(Railspress::WpError)
               category = default_category.slug
             end
           end
@@ -143,13 +143,13 @@ module Railspress::LinkTemplateHelper
   # @param [int|WP_Post] id        Optional. Post ID or post object. Default is the global `$post`.
   # @param [bool]        leavename Optional, defaults to false. Whether to keep post name. Default false.
   # @param [bool]        sample    Optional, defaults to false. Is it a sample permalink. Default false.
-  # @return string|WP_Error The post permalink.
+  # @return string|WpError The post permalink.
   def get_post_permalink(id = 0, leavename = false, sample = false )
     # global $wp_rewrite;
 
     post = get_post(id)
 
-    return post if post.is_a? Railspress::WP_Error # is_wp_error( post )
+    return post if post.is_a? Railspress::WpError # is_wp_error( post )
 
     post_link = Railspress.GLOBAL.wp_rewrite.get_extra_permastruct( post.post_type )
 
@@ -242,7 +242,7 @@ module Railspress::LinkTemplateHelper
 
     return false unless post_type_obj.has_archive
 
-    if get_option( 'permalink_structure' ) && PHP.is_array( post_type_obj.rewrite )
+    if get_option( 'permalink_structure' ) && Php.is_array( post_type_obj.rewrite )
       struct = ( true == post_type_obj.has_archive ) ? post_type_obj.rewrite['slug'] : post_type_obj.has_archive
       if post_type_obj.rewrite['with_front']
         struct = wp_rewrite.front + struct;
@@ -457,7 +457,7 @@ module Railspress::LinkTemplateHelper
 
   # Retrieves the post pages link navigation for previous and next pages.
   #
-  # @global WP_Query $wp_query
+  # @global WpQuery $wp_query
   #
   # @param [string|array] args {
   #     Optional. Arguments to build the post pages link navigation.
@@ -573,7 +573,7 @@ module Railspress::LinkTemplateHelper
 
   # Returns the navigation to next/previous set of posts, when applicable.
   #
-  # @global WP_Query $wp_query WordPress Query object.
+  # @global WpQuery $wp_query WordPress Query object.
   #
   # @param [array] args {
   #     Optional. Default posts navigation arguments. Default empty array.

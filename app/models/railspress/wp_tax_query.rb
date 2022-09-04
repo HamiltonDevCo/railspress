@@ -10,7 +10,7 @@ module Railspress
   # Used for generating SQL clauses that filter a primary query according to object
   # taxonomy terms.
   #
-  # WP_Tax_Query is a helper that allows primary query classes, such as WP_Query, to filter
+  # WP_Tax_Query is a helper that allows primary query classes, such as WpQuery, to filter
   # their results by object metadata, by generating `JOIN` and `WHERE` subclauses to be
   # attached to the primary SQL query string.
   class WpTaxQuery
@@ -296,14 +296,14 @@ module Railspress
     def clean_query(query)
       # if ( empty( $query['taxonomy'] ) ) {
       # 			if ( 'term_taxonomy_id' !== $query['field'] ) {
-      # 				$query = new WP_Error( 'invalid_taxonomy', __( 'Invalid taxonomy.' ) );
+      # 				$query = new WpError( 'invalid_taxonomy', __( 'Invalid taxonomy.' ) );
       # 				return;
       # 			}
       #
       # 			// so long as there are shared terms, include_children requires that a taxonomy is set
       # 			$query['include_children'] = false;
       # 		} elseif ( ! taxonomy_exists( $query['taxonomy'] ) ) {
-      # 			$query = new WP_Error( 'invalid_taxonomy', __( 'Invalid taxonomy.' ) );
+      # 			$query = new WpError( 'invalid_taxonomy', __( 'Invalid taxonomy.' ) );
       # 			return;
       # 		}
       #
@@ -329,7 +329,7 @@ module Railspress
     # Transforms a single query, from one field to another.
     #
     # Operates on the `$query` object by reference. In the case of error,
-    # `$query` is converted to a WP_Error object.
+    # `$query` is converted to a WpError object.
     #
     # @global wpdb $wpdb The WordPress database abstraction object.
     #
@@ -376,7 +376,7 @@ module Railspress
       # }
       #
       # if ( 'AND' == $query['operator'] && count( $term_list ) < count( $query['terms'] ) ) {
-      #   $query = new WP_Error( 'inexistent_terms', __( 'Inexistent terms.' ) );
+      #   $query = new WpError( 'inexistent_terms', __( 'Inexistent terms.' ) );
       # return;
       # }
       #

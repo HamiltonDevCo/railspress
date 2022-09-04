@@ -1,5 +1,5 @@
 module Railspress
-  class WP_Error < StandardError
+  class WpError < StandardError
 
     attr_reader :errors, :error_data
 

@@ -1,4 +1,4 @@
-module Railspress::PHP
+module Railspress::Php
 
   def self.is_array(var)
     var.is_a? Array or var.is_a? Hash

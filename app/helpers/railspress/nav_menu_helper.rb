@@ -26,7 +26,7 @@ module Railspress::NavMenuHelper
     #   menu_obj = get_term_by('name', menu, 'nav_menu') unless menu_obj
     # end
 
-    if !menu_obj || menu_obj.is_a?(Railspress::WP_Error)
+    if !menu_obj || menu_obj.is_a?(Railspress::WpError)
       menu_obj = false
     end
 
@@ -76,7 +76,7 @@ module Railspress::NavMenuHelper
   # Note that `$menu_name` is expected to be pre-slashed.
   #
   # @param [string] menu_name Menu name.
-  # @return [int|WP_Error] Menu ID on success, WP_Error object on failure.
+  # @return [int|WpError] Menu ID on success, WpError object on failure.
   def wp_create_nav_menu(menu_name)
     # expected_slashed ($menu_name)
     wp_update_nav_menu_object(0, {'menu-name':  menu_name })
@@ -88,7 +88,7 @@ module Railspress::NavMenuHelper
   #
   # @param [int]   menu_id   The ID of the menu or "0" to create a new menu.
   # @param [array] menu_data The array of menu data.
-  # @return int|WP_Error Menu ID on success, WP_Error object on failure.
+  # @return int|WpError Menu ID on success, WpError object on failure.
   def wp_update_nav_menu_object(menu_id = 0, menu_data = {} )
     # expected_slashed ($menu_data)
     menu_id = menu_id.to_i
@@ -113,7 +113,7 @@ module Railspress::NavMenuHelper
     # TODO
     # update_response = wp_update_term(menu_id, 'nav_menu', args)
     #
-    # return update_response if update_response.is_a? Railspress::WP_Error
+    # return update_response if update_response.is_a? Railspress::WpError
     #
     # menu_id = update_response['term_id'].to_i
 
@@ -193,7 +193,7 @@ module Railspress::NavMenuHelper
 
     items = get_objects_in_term( menu.term_id, 'nav_menu' )
 
-    return false if  items.is_a? Railspress::WP_Error
+    return false if  items.is_a? Railspress::WpError
 
     defaults        = {
         order:       'ASC',
@@ -372,11 +372,11 @@ module Railspress::NavMenuHelper
           end
 
           term_url       = get_term_link( menu_item.object_id_.to_i, menu_item.object )
-          menu_item.url = term_url.is_a?(Railspress::WP_Error) ? '' : term_url
+          menu_item.url = term_url.is_a?(Railspress::WpError) ? '' : term_url
 
           original_title = get_term_field( 'name', menu_item.object_id_, menu_item.object, 'raw' )
 
-          original_title = false if original_title.is_a?(Railspress::WP_Error)
+          original_title = false if original_title.is_a?(Railspress::WpError)
 
           menu_item.title = '' == menu_item.post_title ? original_title : menu_item.post_title
 

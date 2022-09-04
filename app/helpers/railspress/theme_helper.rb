@@ -5,12 +5,12 @@
 =end
 module Railspress::ThemeHelper
 
-  # Gets a WP_Theme object for a theme.
+  # Gets a WpTheme object for a theme.
   #
   # @param [string] stylesheet Directory name for the theme. Optional. Defaults to current theme.
   # @param [string] theme_root Absolute path of the theme root to look in. Optional. If not specified, get_raw_theme_root()
   #                            is used to calculate the theme root for the $stylesheet provided (or current theme).
-  # @return [WP_Theme] Theme object. Be sure to check the object's exists() method if you need to confirm the theme's existence.
+  # @return [WpTheme] Theme object. Be sure to check the object's exists() method if you need to confirm the theme's existence.
   def wp_get_theme(stylesheet = nil, theme_root = nil )
     stylesheet = get_stylesheet() if stylesheet.blank?
 
@@ -22,7 +22,7 @@ module Railspress::ThemeHelper
         theme_root = Railspress.WP_CONTENT_DIR + theme_root
       end
     end
-    Railspress::WP_Theme.new( stylesheet, theme_root )
+    Railspress::WpTheme.new( stylesheet, theme_root )
   end
 
   # Whether a child theme is in use.
@@ -62,7 +62,7 @@ module Railspress::ThemeHelper
   #
   # @return string
   def get_stylesheet_directory_uri
-    stylesheet         = Railspress::PHP.rawurlencode(get_stylesheet).gsub('%2F', '/')
+    stylesheet         = Railspress::Php.rawurlencode(get_stylesheet).gsub('%2F', '/')
     theme_root_uri     = get_theme_root_uri( stylesheet )
     stylesheet_dir_uri = "#{theme_root_uri}/#{stylesheet}"
 
@@ -111,7 +111,7 @@ module Railspress::ThemeHelper
   #
   # @return string Template directory URI.
   def get_template_directory_uri
-    template = Railspress::PHP.rawurlencode(get_template).gsub('%2F', '/')
+    template = Railspress::Php.rawurlencode(get_template).gsub('%2F', '/')
     theme_root_uri = get_theme_root_uri(template)
     template_dir_uri = "#{theme_root_uri}/#{template}"
 

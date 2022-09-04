@@ -193,7 +193,7 @@ module Railspress::PostTemplateHelper
     if post_type_supports(post.post_type, 'post-formats')
        post_format = get_post_format(post.ID)
 
-      if post_format && !(post_format.is_a? Railspress::WP_Error)
+      if post_format && !(post_format.is_a? Railspress::WpError)
         classes << 'format-' + sanitize_html_class(post_format)
       else
         classes << 'format-standard';
@@ -267,7 +267,7 @@ module Railspress::PostTemplateHelper
 
   # Retrieves an array of the class names for the body element.
   #
-  # @global WP_Query $wp_query
+  # @global WpQuery $wp_query
   #
   # @param [string|string[]] class_ Space-separated string or array of class names to add to the class list.
   # @return string[] Array of class names.
@@ -317,7 +317,7 @@ module Railspress::PostTemplateHelper
             # Post Format
             if post_type_supports(post.post_type, 'post-formats')
               post_format = get_post_format(post.ID)
-              if post_format && !(post_format.is_a? Railspress::WP_Error)
+              if post_format && !(post_format.is_a? Railspress::WpError)
                 classes << 'single-format-' + sanitize_html_class(post_format)
               else
                 classes << 'single-format-standard';

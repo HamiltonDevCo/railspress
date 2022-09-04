@@ -638,7 +638,7 @@ module Railspress::Functions
     scheme_separator = path.index('://')
 
     stream = path.slice(0, scheme_separator)
-    Railspress::PHP.stream_get_wrappers.include? stream
+    Railspress::Php.stream_get_wrappers.include? stream
   end
 
   # Filter/validate a variable as a boolean.

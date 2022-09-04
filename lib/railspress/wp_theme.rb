@@ -1,9 +1,9 @@
 =begin
- * WP_Theme Class
+ * WpTheme Class
  *
  * file wp-includes\class-wp-theme.php
 =end
-class Railspress::WP_Theme
+class Railspress::WpTheme
 
   # Headers for style.css files.
   FILE_HEADERS = {

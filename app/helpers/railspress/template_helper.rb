@@ -137,7 +137,7 @@ end
  #
  # @return string Full path to author template file.
 def get_author_template()
-	@wp_query = Railspress::Wp_Query.new if @wp_query.nil?
+	@wp_query = Railspress::WpQuery.new if @wp_query.nil?
 	author = @wp_query.get_queried_object
 
 	templates = []
@@ -172,7 +172,7 @@ end
  #
  # @return string Full path to category template file.
 def get_category_template()
-	@wp_query = Railspress::Wp_Query.new if @wp_query.nil?
+	@wp_query = Railspress::WpQuery.new if @wp_query.nil?
 	category = @wp_query.get_queried_object
 
 	templates = []
