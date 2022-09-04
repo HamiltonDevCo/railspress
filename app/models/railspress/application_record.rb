@@ -3,7 +3,7 @@ class Railspress::ApplicationRecord < ActiveRecord::Base
   connects_to database: { writing: :wordpress, reading: :wordpress }
 
   def self.prefix_table_name(table_name)
-    prefix ||= self.connection_config[:prefix] || "wp"
+    prefix =  "wp"
     "#{prefix}_#{table_name}"
   end
 end
